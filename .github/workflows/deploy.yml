@@ -32,7 +32,7 @@ jobs:
 
       - name: Create ECR Repository on LocalStack (skip if exists)
         run: |
-          aws --endpoint-url=http://host.docker.internal:4566 ecr create-repository \
+          aws --endpoint-url=http://localstack:4566 ecr create-repository \
           --repository-name localstack-ecr-repository \
           --image-scanning-configuration scanOnPush=true
 
