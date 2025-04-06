@@ -1,1 +1,34 @@
-.terraform/
+# Local .terraform directories
+**/.terraform/*
+
+# Terraform crash logs
+crash.log
+
+# .tfstate files (contains sensitive data)
+*.tfstate
+*.tfstate.*
+
+# Terraform plan output
+*.tfplan
+
+# Terraform variable files with sensitive data
+*.tfvars
+*.tfvars.json
+
+# Override files (can be used locally but shouldn't be committed)
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# .terraform.lock.hcl can be ignored in some workflows, but usually it's kept
+# Uncomment if you want to ignore the dependency lock file
+# .terraform.lock.hcl
+
+# IDE and system files (optional but useful)
+*.log
+*.bak
+*.swp
+.DS_Store
+.idea/
+.vscode/
