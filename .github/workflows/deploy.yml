@@ -30,6 +30,7 @@ jobs:
       - name: Start LocalStack
         uses: LocalStack/setup-localstack@v0.2.3
         with:
+          state-action: start
           image-tag: 'latest'
           install-awslocal: 'true'
           configuration: "DEBUG=1"
