@@ -25,7 +25,7 @@ jobs:
         uses: docker/setup-buildx-action@v2
 
       - name: Start LocalStack via Docker Compose
-        run: docker-compose -f localstack/compose.yml up -d
+        run: docker compose -f localstack/compose.yml up -d
 
       - name: Create ECR Repository on LocalStack (skip if exists)
         run: |
