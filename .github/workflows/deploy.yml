@@ -27,18 +27,12 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Install Python & pip on Self-hosted Runner
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y python3 python3-pip
-          python3 --version
-          pip3 --version
-
       - name: Start LocalStack
         uses: LocalStack/setup-localstack@v0.2.3
         with:
           image-tag: 'latest'
           install-awslocal: 'true'
+          configuration: "DEBUG=1"
           use-pro: 'true'
         env:
           LOCALSTACK_AUTH_TOKEN: ${{ secrets.LOCALSTACK_AUTH_TOKEN }}
