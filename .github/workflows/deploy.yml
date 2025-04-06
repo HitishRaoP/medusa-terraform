@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     env:
       AWS_REGION: us-east-1
       AWS_ACCESS_KEY_ID: test
@@ -32,7 +32,7 @@ jobs:
 
       - name: Create ECR Repository on LocalStack (skip if exists)
         run: |
-          aws --endpoint-url=https://aws.localstack.cloud:443 ecr create-repository \
+          aws --endpoint-url=http://localhost:4566 ecr create-repository \
           --repository-name localstack-ecr-repository \
           --image-scanning-configuration scanOnPush=true
 
