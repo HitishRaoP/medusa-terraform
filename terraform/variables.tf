@@ -10,7 +10,7 @@ variable "aws_access_key" {
 
 variable "localstack_endpoint" {
   type    = string
-  default = "http://host.docker.internal:4566"
+  default = "http://localhost:4566"
 }
 
 variable "aws_region" {
