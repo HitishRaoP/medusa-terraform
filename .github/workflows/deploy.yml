@@ -1,0 +1,58 @@
+name: Deploy to LocalStack Fargate
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      AWS_REGION: us-east-1
+      ECR_REPO_NAME: localstack-ecr-repository
+      IMAGE_TAG: latest
+      LOCALSTACK_ACCOUNT_ID: "000000000000"
+      LOCALSTACK_DOMAIN: "localhost.localstack.cloud"
+      LOCALSTACK_PORT: "4566"
+      LOCALSTACK_ECR_URL: "000000000000.dkr.ecr.us-east-1.localhost.localstack.cloud:4566"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Start LocalStack via Docker Compose
+        run: docker-compose -f localstack/compose.yml up -d
+
+      - name: Create ECR Repository on LocalStack (skip if exists)
+        run: |
+          awslocal ecr create-repository \
+          --repository-name localstack-ecr-repository \
+          --image-scanning-configuration scanOnPush=true
+
+      - name: Build Docker Image
+        run: |
+          docker build -t backend-server ./backend
+
+      - name: Tag Docker Image for LocalStack ECR
+        run: |
+          docker tag backend-server \
+            $LOCALSTACK_ECR_URL/$ECR_REPO_NAME:$IMAGE_TAG
+
+      - name: Push Image to LocalStack ECR
+        run: |
+          docker push $LOCALSTACK_ECR_URL/$ECR_REPO_NAME:$IMAGE_TAG
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Initialize Terraform
+        working-directory: ./terraform
+        run: terraform init
+
+      - name: Apply Terraform to Deploy to Fargate
+        working-directory: ./terraform
+        run: terraform apply -auto-approve
