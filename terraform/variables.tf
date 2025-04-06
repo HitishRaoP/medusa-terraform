@@ -10,7 +10,7 @@ variable "aws_access_key" {
 
 variable "localstack_endpoint" {
   type    = string
-  default = "http://localhost:4566"
+  default = "https://aws.localstack.cloud:443"
 }
 
 variable "aws_region" {
